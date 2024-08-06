@@ -14,7 +14,7 @@ An online examination system designed to facilitate tests and quizzes for educat
 ## Technology Stack
 
 - **Backend**: Java Servlets, JSP
-- **Database**: Apache Derby
+- **Database**: Microsoft SQL Server
 - **Frontend**: HTML, CSS, JavaScript
 
 ## Installation

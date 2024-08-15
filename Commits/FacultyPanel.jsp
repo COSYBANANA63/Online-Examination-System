@@ -79,9 +79,10 @@
         initializeCKEditors();
 
         // Bind the AJAX submission to the publish button
-        document.querySelector('.publish-btn').addEventListener('click', function(event) {
+        document.querySelector('.add-question-btn').addEventListener('click', function(event) {
             event.preventDefault();
             sendDataToServlet();
+            exam-form.reset();
         });
     });
     </script>
@@ -189,7 +190,7 @@
             gap: 10px;
         }
 
-        .cancel-btn, .save-btn, .publish-btn {
+        .cancel-btn, .save-btn, .publish-btn, .add-question-btn {
             background-color: #2980B9;
             color: #fff;
             border: none;
@@ -244,16 +245,21 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        .add-question-btn{
+            
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo"><i class="fas fa-user-circle"></i></div>
+        <div class="logo"><i class="fas fa-user-circle"></i>
+        ${sessionScope.fullName}
+        </div>
         <ul>
             <li><a href="#"><i class="fas fa-home"></i><span class="text">Home</span></a></li>
             <li><a href="#"><i class="fas fa-user"></i><span class="text">Profile</span></a></li>
             <li><a href="#"><i class="fas fa-cog"></i><span class="text">Settings</span></a></li>
-            <li><a href="#"><i class="fas fa-sign-out-alt"></i><span class="text">Logout</span></a></li>
+            <li><a href="Login.jsp"><i class="fas fa-sign-out-alt"></i><span class="text">Logout</span></a></li>
         </ul>
     </div>
 
@@ -265,7 +271,7 @@
             <div class="header-right">
                 <button class="cancel-btn">Cancel</button>
                 <button class="save-btn">Save Draft</button>
-                <button class="publish-btn">Publish</button>
+                <button class="publish-btn" name="action" value="publish">Publish</button>
             </div>
         </header>
 
@@ -308,6 +314,10 @@
                 <label><input type="checkbox" name="correctOption4" value="4"> Correct Answer</label>
             </div>
         </form>
+        <div style="padding-top: 20px;">
+        <button class="add-question-btn" name="action" value="add" style="padding: 20px;">Add Question</button>
+        </div>
     </div>
+          <input type="hidden" name="examId" value="${sessionScope.examId}">
 </body>
 </html>

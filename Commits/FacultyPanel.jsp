@@ -67,11 +67,43 @@
         },
         success: function(response) {
             console.log('Data saved successfully!');
+            resetFormAndEditors();
         },
         error: function() {
             console.log('An error occurred while saving the data.');
         }
+        
     });
+    //Reset CKEDITOR FIELDS
+    resetFormAndEditors();
+}
+
+function publishExam() {
+    $.ajax({
+        type: 'POST',
+        url: 'PublishServlet', // The servlet that handles publishing
+        data: {
+            action: 'publish'
+        },
+        success: function(response) {
+            alert('Exam published successfully!');
+            // Optionally, redirect to the home page or refresh the page to start a new session
+            window.location.href = 'FacultyPanel.jsp'; // or any other appropriate URL
+        },
+        error: function() {
+            console.log('An error occurred while publishing the exam.');
+        }
+    });
+}
+
+function resetFormAndEditors() {
+    // Reset the form fields
+    document.getElementById("exam-form").reset();
+
+    // Reset CKEditor instances
+    for (var instanceName in CKEDITOR.instances) {
+        CKEDITOR.instances[instanceName].setData(''); // Clear the content of each editor
+    }
 }
 
 
@@ -79,7 +111,7 @@
         initializeCKEditors();
 
         // Bind the AJAX submission to the publish button
-        document.querySelector('.publish-btn').addEventListener('click', function(event) {
+        document.querySelector('.add-question-btn').addEventListener('click', function(event) {
             event.preventDefault();
             sendDataToServlet();
         });
@@ -189,7 +221,7 @@
             gap: 10px;
         }
 
-        .cancel-btn, .save-btn, .publish-btn {
+        .cancel-btn, .save-btn, .publish-btn, .add-question-btn {
             background-color: #2980B9;
             color: #fff;
             border: none;
@@ -244,16 +276,21 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        .add-question-btn{
+            
+        }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <div class="logo"><i class="fas fa-user-circle"></i></div>
+        <div class="logo"><i class="fas fa-user-circle"></i>
+        ${sessionScope.fullName}
+        </div>
         <ul>
             <li><a href="#"><i class="fas fa-home"></i><span class="text">Home</span></a></li>
-            <li><a href="#"><i class="fas fa-user"></i><span class="text">Profile</span></a></li>
+            <li><a href="#"><i class="fas fa-file-alt"></i><span class="text">Exams</span></a></li>
             <li><a href="#"><i class="fas fa-cog"></i><span class="text">Settings</span></a></li>
-            <li><a href="#"><i class="fas fa-sign-out-alt"></i><span class="text">Logout</span></a></li>
+            <li><a href="Login.jsp"><i class="fas fa-sign-out-alt"></i><span class="text">Logout</span></a></li>
         </ul>
     </div>
 
@@ -265,12 +302,13 @@
             <div class="header-right">
                 <button class="cancel-btn">Cancel</button>
                 <button class="save-btn">Save Draft</button>
-                <button class="publish-btn">Publish</button>
+                <button class="publish-btn" name="action" value="publish" onclick="publishExam()">Publish</button>
             </div>
         </header>
-
-        <form class="exam-form">
+        <input type="hidden" name="examId" value="${sessionScope.examId}">
+        <form class="exam-form" id="exam-form">
             <div class="form-group">
+                <h4>This Exam ID is: ${sessionScope.examId}</h4>
                 <label for="title">Exam Title:</label>
                 <input type="text" id="title" name="title" required>
             </div>
@@ -308,6 +346,9 @@
                 <label><input type="checkbox" name="correctOption4" value="4"> Correct Answer</label>
             </div>
         </form>
+        <div style="padding-top: 20px;">
+        <button class="add-question-btn" name="action" value="add" style="padding: 20px;">Add Question</button>
+        </div>
     </div>
 </body>
 </html>

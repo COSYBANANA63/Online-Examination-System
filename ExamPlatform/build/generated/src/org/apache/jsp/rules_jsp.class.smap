@@ -1,0 +1,12 @@
+SMAP
+rules_jsp.java
+JSP
+*S JSP
+*F
++ 0 rules.jsp
+rules.jsp
+*L
+1,38:44
+39,3:82,3
+42,100:91
+*E
